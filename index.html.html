@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classified - Campeones 2026 Portal</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        spain: {
+                            red: '#DC143C',
+                            gold: '#FFD700',
+                            darkRed: '#8B0000',
+                            navy: '#0A1128'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            background-image: linear-gradient(rgba(10, 17, 40, 0.85), rgba(10, 17, 40, 0.92)), 
+                              url('https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=2000&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-card {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(255, 215, 0, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(220, 20, 60, 0.3);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.6);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 215, 0, 0.3);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 215, 0, 0.6);
+        }
+
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #FFF5C0 0%, #FFD700 50%, #B8860B 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .red-gold-btn {
+            background: linear-gradient(135deg, #DC143C 0%, #990000 100%);
+            border: 1px solid #FFD700;
+            box-shadow: 0 4px 15px rgba(220, 20, 60, 0.4);
+            transition: all 0.2s ease;
+        }
+
+        .red-gold-btn:hover {
+            background: linear-gradient(135deg, #FF1E4A 0%, #B30000 100%);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
+            transform: scale(1.02);
+        }
+
+        /* Pulse glow animation for champion badge */
+        @keyframes goldGlow {
+            0%, 100% { filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6)); }
+            50% { filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.9)); }
+        }
+        .trophy-glow {
+            animation: goldGlow 3s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="text-slate-100 min-h-screen flex flex-col justify-between selection:bg-spain-gold selection:text-spain-navy">
+
+    <div id="auth-overlay" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-spain-navy/90 backdrop-blur-xl">
+        <div class="glass-panel w-full max-w-md rounded-2xl p-8 relative overflow-hidden border-2 border-spain-gold/30">
+            <!-- Trophy Crest Header -->
+            <div class="text-center mb-6">
+                <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-tr from-spain-darkRed to-spain-red border-2 border-spain-gold mb-3 trophy-glow shadow-xl">
+                    <i class="fa-solid fa-trophy text-4xl text-spain-gold"></i>
+                </div>
+                <h1 class="text-2xl font-black tracking-wider uppercase gold-gradient-text">Spain 2026 Portal</h1>
+                <p class="text-xs text-slate-400 font-medium tracking-widest mt-1">RESTRICTED ACCESS • CLASSIFIED</p>
+            </div>
+
+            <!-- Auth Form -->
+            <form id="login-form" onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-spain-gold uppercase tracking-wider mb-1">Username</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-user absolute left-3 top-3.5 text-slate-400 text-sm"></i>
+                        <input type="text" id="login-username" required placeholder="Enter username..." 
+                            class="w-full bg-slate-900/80 border border-slate-700 rounded-lg py-2.5 pl-10 pr-4 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-spain-gold focus:ring-1 focus:ring-spain-gold transition">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-spain-gold uppercase tracking-wider mb-1">Password</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-lock absolute left-3 top-3.5 text-slate-400 text-sm"></i>
+                        <input type="password" id="login-password" required placeholder="••••••••" 
+                            class="w-full bg-slate-900/80 border border-slate-700 rounded-lg py-2.5 pl-10 pr-4 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-spain-gold focus:ring-1 focus:ring-spain-gold transition">
+                    </div>
+                </div>
+
+                <div id="login-error" class="hidden p-3 rounded-lg bg-red-950/80 border border-red-500/50 text-red-300 text-xs flex items-center gap-2">
+                    <i class="fa-solid fa-circle-exclamation text-red-400"></i>
+                    <span id="login-error-text">Invalid username or password.</span>
+                </div>
+
+                <button type="submit" class="w-full py-3 rounded-lg font-bold text-white uppercase tracking-wider text-sm red-gold-btn mt-2">
+                    Authenticate Session
+                </button>
+            </form>
+
+            <div class="mt-6 text-center border-t border-slate-800 pt-4">
+                <p class="text-xs text-slate-400">Authorized Personnel Only • <span class="text-spain-gold font-semibold">2026 World Champions Edition</span></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="main-app" class="hidden flex-col min-h-screen">
+        <!-- Top Navigation Bar -->
+        <header class="glass-panel sticky top-0 z-40 border-b border-spain-gold/20 px-6 py-3">
+            <div class="max-w-7xl mx-auto flex items-center justify-between">
+                <!-- Brand / Logo -->
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xl">🇪🇸</span>
+                        <div class="flex flex-col">
+                            <span class="font-extrabold text-lg leading-tight gold-gradient-text tracking-wide uppercase">RFEF Campeones</span>
+                            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">World Cup 2026 Victory Hub</span>
+                        </div>
+                    </div>
+                    <span class="hidden md:inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-spain-gold/10 text-spain-gold border border-spain-gold/30">
+                        CLASSIFIED ACCESS
+                    </span>
+                </div>
+
+                <!-- Navigation Tabs -->
+                <nav class="hidden md:flex items-center gap-1 bg-slate-900/60 p-1 rounded-xl border border-slate-800">
+                    <button onclick="switchTab('games')" id="nav-btn-games" class="nav-tab px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2 text-spain-gold bg-slate-800/80">
+                        <i class="fa-solid fa-gamepad"></i> Offline Games
+                    </button>
+                    <button onclick="switchTab('social')" id="nav-btn-social" class="nav-tab px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2 text-slate-400 hover:text-white">
+                        <i class="fa-solid fa-share-nodes"></i> Social Hub
+                    </button>
+                    <button onclick="switchTab('admin')" id="nav-btn-admin" class="nav-tab hidden px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2 text-slate-400 hover:text-white">
+                        <i class="fa-solid fa-user-shield"></i> Admin Monitor
+                    </button>
+                </nav>
+
+                <!-- User Session Details & Controls -->
+                <div class="flex items-center gap-3">
+                    <div class="text-right hidden sm:block">
+                        <div class="text-xs font-bold text-white flex items-center justify-end gap-1.5">
+                            <span id="user-badge-role" class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                            <span id="current-user-name">--</span>
+                        </div>
+                        <div class="text-[10px] text-slate-400">
+                            Session: <span id="session-timer" class="font-mono text-spain-gold">00:00:00</span>
+                        </div>
+                    </div>
+
+                    <button onclick="handleLogout()" class="p-2.5 rounded-lg bg-slate-800/80 hover:bg-red-950/50 border border-slate-700 hover:border-red-500/50 text-slate-300 hover:text-red-400 transition" title="Logout">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Navigation Bar -->
+            <div class="flex md:hidden items-center justify-around mt-3 pt-2 border-t border-slate-800/60">
+                <button onclick="switchTab('games')" id="mobile-btn-games" class="text-xs font-bold text-spain-gold flex items-center gap-1.5">
+                    <i class="fa-solid fa-gamepad"></i> Games
+                </button>
+                <button onclick="switchTab('social')" id="mobile-btn-social" class="text-xs font-bold text-slate-400 flex items-center gap-1.5">
+                    <i class="fa-solid fa-share-nodes"></i> Social Hub
+                </button>
+                <button onclick="switchTab('admin')" id="mobile-btn-admin" class="hidden text-xs font-bold text-slate-400 flex items-center gap-1.5">
+                    <i class="fa-solid fa-user-shield"></i> Admin Panel
+                </button>
+            </div>
+        </header>
+
+        <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 space-y-6">
+            
+            <!-- Quick Hide Key Indicator Bar -->
+            <div class="glass-card rounded-xl p-3 px-4 flex flex-wrap items-center justify-between gap-3 text-xs border-l-4 border-l-spain-gold">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-shield-halved text-spain-gold text-base"></i>
+                    <span class="text-slate-300">
+                        <strong class="text-white">Panic Key Security:</strong> Press <kbd class="px-2 py-0.5 bg-slate-800 border border-slate-700 rounded font-mono text-spain-gold">Shift + Q</kbd> to switch instantly to MS Word view. Press <kbd class="px-2 py-0.5 bg-slate-800 border border-slate-700 rounded font-mono text-spain-gold">Ctrl + Q</kbd> to return.
+                    </span>
+                </div>
+                <div class="text-[11px] text-slate-400 flex items-center gap-1">
+                    <i class="fa-solid fa-circle text-[8px] text-emerald-400 animate-pulse"></i> Offline Mode Ready
+                </div>
+            </div>
+
+            <!-- ================= SECTION 1: GAMES HUB ================= -->
+            <div id="tab-games" class="tab-content space-y-6">
+                <!-- Game Selector Header -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-xl font-black text-white uppercase tracking-wide flex items-center gap-2">
+                            <i class="fa-solid fa-trophy text-spain-gold"></i> Campeones Mini-Games Arcade
+                        </h2>
+                        <p class="text-xs text-slate-400">Play offline interactive mini-games anytime without internet connection.</p>
+                    </div>
+
+                    <!-- Mini-Game Selector Controls -->
+                    <div class="inline-flex bg-slate-900/80 p-1 rounded-xl border border-slate-800">
+                        <button onclick="selectGame('space')" id="btn-game-space" class="game-sel-btn px-3 py-1.5 rounded-lg text-xs font-bold text-spain-gold bg-slate-800 border border-spain-gold/30">
+                            🚀 Space Shooter
+                        </button>
+                        <button onclick="selectGame('snake')" id="btn-game-snake" class="game-sel-btn px-3 py-1.5 rounded-lg text-xs font-bold text-slate-400 hover:text-white">
+                            🐍 Snake Champions
+                        </button>
+                        <button onclick="selectGame('pong')" id="btn-game-pong" class="game-sel-btn px-3 py-1.5 rounded-lg text-xs font-bold text-slate-400 hover:text-white">
+                            🏓 Pong Arcade
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Game Container Glass Panel -->
+                <div class="glass-panel rounded-2xl p-4 sm:p-6 flex flex-col items-center justify-center relative overflow-hidden">
+                    
+                    <!-- Game HUD Overlay -->
+                    <div class="w-full max-w-2xl flex items-center justify-between mb-3 text-xs font-bold bg-slate-900/80 px-4 py-2 rounded-xl border border-slate-800">
+                        <div id="game-title-display" class="text-spain-gold uppercase tracking-wider">
+                            Space Shooter
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div>Score: <span id="game-score" class="text-emerald-400 font-mono text-sm">0</span></div>
+                            <div>High Score: <span id="game-highscore" class="text-spain-gold font-mono text-sm">0</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Canvas Game Viewport -->
+                    <div class="relative w-full max-w-2xl aspect-[4/3] sm:aspect-[16/9] bg-slate-950 rounded-xl overflow-hidden border border-slate-800 shadow-2xl flex items-center justify-center">
+                        <canvas id="game-canvas" class="w-full h-full block cursor-crosshair"></canvas>
+                        
+                        <!-- Start / Game Over Overlay -->
+                        <div id="game-modal" class="absolute inset-0 bg-slate-950/85 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center z-10">
+                            <i id="game-modal-icon" class="fa-solid fa-gamepad text-5xl text-spain-gold mb-3 animate-bounce"></i>
+                            <h3 id="game-modal-title" class="text-2xl font-black text-white uppercase tracking-wider mb-2">Ready to Play?</h3>
+                            <p id="game-modal-desc" class="text-xs text-slate-300 max-w-md mb-6">Defend Spain's championship trophy! Use Arrow Keys or A/D to move, Spacebar to shoot.</p>
+                            <button onclick="startCurrentGame()" class="px-6 py-2.5 rounded-xl text-sm font-bold text-white uppercase tracking-wider red-gold-btn flex items-center gap-2">
+                                <i class="fa-solid fa-play"></i> Start Game
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Game Control Helper Footer -->
+                    <div class="mt-4 text-center text-xs text-slate-400 flex flex-wrap items-center justify-center gap-4">
+                        <span><kbd class="px-2 py-0.5 bg-slate-800 border border-slate-700 rounded text-slate-200">←</kbd> <kbd class="px-2 py-0.5 bg-slate-800 border border-slate-700 rounded text-slate-200">→</kbd> or <kbd class="px-2 py-0.5 bg-slate-800 border border-slate-700 rounded text-slate-200">A</kbd> <kbd class="px-2 py-0.5 bg-slate-800 border border-slate-700 rounded text-slate-200">D</kbd> Move</span>
+                        <span><kbd class="px-2 py-0.5 bg-slate-800 border border-slate-700 rounded text-slate-200">Space</kbd> Action / Shoot</span>
+                        <span><kbd class="px-2 py-0.5 bg-slate-800 border border-slate-700 rounded text-slate-200">P</kbd> Pause</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-social" class="tab-content space-y-6 hidden">
+                <div>
+                    <h2 class="text-xl font-black text-white uppercase tracking-wide flex items-center gap-2">
+                        <i class="fa-solid fa-share-nodes text-spain-gold"></i> Social Hub & Media Links
+                    </h2>
+                    <p class="text-xs text-slate-400">Quick access links to official channels, sports updates, and social apps.</p>
+                </div>
+
+                <!-- Social Cards Directory -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <!-- YouTube -->
+                    <a href="https://youtube.com" target="_blank" rel="noopener" class="glass-card p-5 rounded-2xl flex flex-col items-center text-center group">
+                        <div class="w-14 h-14 rounded-2xl bg-red-600/20 text-red-500 border border-red-500/30 flex items-center justify-center text-2xl mb-3 group-hover:scale-110 transition">
+                            <i class="fa-brands fa-youtube"></i>
+                        </div>
+                        <h3 class="font-bold text-sm text-white group-hover:text-spain-gold transition">YouTube</h3>
+                        <p class="text-[11px] text-slate-400 mt-1">Highlights & Videos</p>
+                    </a>
+
+                    <!-- Instagram -->
+                    <a href="https://instagram.com" target="_blank" rel="noopener" class="glass-card p-5 rounded-2xl flex flex-col items-center text-center group">
+                        <div class="w-14 h-14 rounded-2xl bg-pink-600/20 text-pink-400 border border-pink-500/30 flex items-center justify-center text-2xl mb-3 group-hover:scale-110 transition">
+                            <i class="fa-brands fa-instagram"></i>
+                        </div>
+                        <h3 class="font-bold text-sm text-white group-hover:text-spain-gold transition">Instagram</h3>
+                        <p class="text-[11px] text-slate-400 mt-1">Photos & Stories</p>
+                    </a>
+
+                    <!-- TikTok -->
+                    <a href="https://tiktok.com" target="_blank" rel="noopener" class="glass-card p-5 rounded-2xl flex flex-col items-center text-center group">
+                        <div class="w-14 h-14 rounded-2xl bg-cyan-600/20 text-cyan-400 border border-cyan-500/30 flex items-center justify-center text-2xl mb-3 group-hover:scale-110 transition">
+                            <i class="fa-brands fa-tiktok"></i>
+                        </div>
+                        <h3 class="font-bold text-sm text-white group-hover:text-spain-gold transition">TikTok</h3>
+                        <p class="text-[11px] text-slate-400 mt-1">Short Clips & Trends</p>
+                    </a>
+
+                    <!-- X / Twitter -->
+                    <a href="https://x.com" target="_blank" rel="noopener" class="glass-card p-5 rounded-2xl flex flex-col items-center text-center group">
+                        <div class="w-14 h-14 rounded-2xl bg-slate-700/40 text-slate-200 border border-slate-600/30 flex items-center justify-center text-2xl mb-3 group-hover:scale-110 transition">
+                            <i class="fa-brands fa-x-twitter"></i>
+                        </div>
+                        <h3 class="font-bold text-sm text-white group-hover:text-spain-gold transition">X / Twitter</h3>
+                        <p class="text-[11px] text-slate-400 mt-1">Live News & Feed</p>
+                    </a>
+
+                    <!-- Twitch -->
+                    <a href="https://twitch.tv" target="_blank" rel="noopener" class="glass-card p-5 rounded-2xl flex flex-col items-center text-center group">
+                        <div class="w-14 h-14 rounded-2xl bg-purple-600/20 text-purple-400 border border-purple-500/30 flex items-center justify-center text-2xl mb-3 group-hover:scale-110 transition">
+                            <i class="fa-brands fa-twitch"></i>
+                        </div>
+                        <h3 class="font-bold text-sm text-white group-hover:text-spain-gold transition">Twitch</h3>
+                        <p class="text-[11px] text-slate-400 mt-1">Live Gaming Streams</p>
+                    </a>
+
+                    <!-- Discord -->
+                    <a href="https://discord.com" target="_blank" rel="noopener" class="glass-card p-5 rounded-2xl flex flex-col items-center text-center group">
+                        <div class="w-14 h-14 rounded-2xl bg-indigo-600/20 text-indigo-400 border border-indigo-500/30 flex items-center justify-center text-2xl mb-3 group-hover:scale-110 transition">
+                            <i class="fa-brands fa-discord"></i>
+                        </div>
+                        <h3 class="font-bold text-sm text-white group-hover:text-spain-gold transition">Discord</h3>
+                        <p class="text-[11px] text-slate-400 mt-1">Community Chat</p>
+                    </a>
+
+                    <!-- Reddit -->
+                    <a href="https://reddit.com" target="_blank" rel="noopener" class="glass-card p-5 rounded-2xl flex flex-col items-center text-center group">
+                        <div class="w-14 h-14 rounded-2xl bg-orange-600/20 text-orange-400 border border-orange-500/30 flex items-center justify-center text-2xl mb-3 group-hover:scale-110 transition">
+                            <i class="fa-brands fa-reddit"></i>
+                        </div>
+                        <h3 class="font-bold text-sm text-white group-hover:text-spain-gold transition">Reddit</h3>
+                        <p class="text-[11px] text-slate-400 mt-1">Discussions & Threads</p>
+                    </a>
+
+                    <!-- Spotify -->
+                    <a href="https://spotify.com" target="_blank" rel="noopener" class="glass-card p-5 rounded-2xl flex flex-col items-center text-center group">
+                        <div class="w-14 h-14 rounded-2xl bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center text-2xl mb-3 group-hover:scale-110 transition">
+                            <i class="fa-brands fa-spotify"></i>
+                        </div>
+                        <h3 class="font-bold text-sm text-white group-hover:text-spain-gold transition">Spotify</h3>
+                        <p class="text-[11px] text-slate-400 mt-1">Victory Anthems</p>
+                    </a>
+                </div>
+            </div>
+
+            <div id="tab-admin" class="tab-content space-y-6 hidden">
+                <div>
+                    <h2 class="text-xl font-black text-white uppercase tracking-wide flex items-center gap-2">
+                        <i class="fa-solid fa-user-shield text-spain-gold"></i> Admin Security Command Center
+                    </h2>
+                    <p class="text-xs text-slate-400">View active sessions, monitor user activity logs, and manage guest access controls.</p>
+                </div>
+
+                <!-- Admin Metrics Overview Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="glass-card p-5 rounded-2xl border-l-4 border-l-emerald-500">
+                        <div class="text-xs text-slate-400 font-bold uppercase">Active Sessions</div>
+                        <div class="text-2xl font-black text-white mt-1" id="admin-stat-active">2</div>
+                        <div class="text-[10px] text-emerald-400 mt-1 flex items-center gap-1">
+                            <i class="fa-solid fa-circle text-[8px]"></i> Real-time Monitoring
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-5 rounded-2xl border-l-4 border-l-spain-gold">
+                        <div class="text-xs text-slate-400 font-bold uppercase">Total User Logs</div>
+                        <div class="text-2xl font-black text-white mt-1" id="admin-stat-logs">14</div>
+                        <div class="text-[10px] text-spain-gold mt-1">Logged Actions Today</div>
+                    </div>
+
+                    <div class="glass-card p-5 rounded-2xl border-l-4 border-l-red-500">
+                        <div class="text-xs text-slate-400 font-bold uppercase">Access Blocked Users</div>
+                        <div class="text-2xl font-black text-white mt-1" id="admin-stat-blocked">0</div>
+                        <div class="text-[10px] text-slate-400 mt-1">Guest Blocking System Active</div>
+                    </div>
+                </div>
+
+                <!-- Active Users & Security Table -->
+                <div class="glass-panel rounded-2xl p-6 border border-slate-800">
+                    <h3 class="text-sm font-bold text-spain-gold uppercase tracking-wider mb-4 flex items-center justify-between">
+                        <span><i class="fa-solid fa-users text-slate-400 mr-2"></i> User Session Controls</span>
+                        <button onclick="refreshAdminTable()" class="text-xs text-slate-400 hover:text-white transition">
+                            <i class="fa-solid fa-rotate-right"></i> Refresh
+                        </button>
+                    </h3>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead>
+                                <tr class="text-slate-400 border-b border-slate-800 uppercase tracking-wider">
+                                    <th class="pb-3 font-semibold">User</th>
+                                    <th class="pb-3 font-semibold">Role</th>
+                                    <th class="pb-3 font-semibold">Status</th>
+                                    <th class="pb-3 font-semibold">Last Active</th>
+                                    <th class="pb-3 font-semibold">Current Activity</th>
+                                    <th class="pb-3 font-semibold text-right">Access Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-user-table" class="divide-y divide-slate-800/60">
+                                <!-- Populated dynamically by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Audit Log Terminal Card -->
+                <div class="glass-panel rounded-2xl p-6 border border-slate-800">
+                    <h3 class="text-sm font-bold text-spain-gold uppercase tracking-wider mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-terminal text-slate-400"></i> Real-time Activity Audit Trail
+                    </h3>
+                    <div id="admin-audit-log" class="bg-slate-950 p-4 rounded-xl border border-slate-800 font-mono text-[11px] text-slate-300 h-48 overflow-y-auto space-y-1.5">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="glass-panel mt-auto border-t border-slate-800 py-4 px-6 text-center text-xs text-slate-500">
+            <p>Spain 2026 World Cup Celebration Dashboard • Confidential Access System</p>
+        </footer>
+    </div>
+
+    <div id="quick-word-screen" class="hidden fixed inset-0 z-50 bg-[#F3F2F1] text-slate-800 font-sans flex flex-col">
+        <!-- Word Header Ribbon Bar -->
+        <div class="bg-[#107C41] text-white px-4 py-2 flex items-center justify-between text-xs font-semibold shadow">
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-file-word text-lg"></i>
+                <span>Document1 - Microsoft Word</span>
+            </div>
+            <div class="text-[11px] opacity-80">Press Ctrl + Q to resume portal session</div>
+        </div>
+
+        <!-- Word Toolbar Tabs -->
+        <div class="bg-white border-b border-slate-300 px-4 py-1.5 flex gap-6 text-xs text-slate-600 font-medium shadow-sm">
+            <span class="text-[#107C41] font-bold border-b-2 border-[#107C41] pb-1">Home</span>
+            <span>Insert</span>
+            <span>Layout</span>
+            <span>References</span>
+            <span>Review</span>
+            <span>View</span>
+        </div>
+
+        <!-- Simulated Word Document Editor -->
+        <div class="flex-1 bg-[#F3F2F1] p-6 overflow-y-auto flex justify-center">
+            <div class="w-full max-w-3xl bg-white shadow-md border border-slate-300 p-12 min-h-[800px] text-slate-800 leading-relaxed space-y-4">
+                <h1 class="text-2xl font-serif font-bold text-slate-900 border-b pb-2">Quarterly Strategic Report - 2026</h1>
+                <p class="text-sm">
+                    This document contains confidential analytical reports regarding operational efficiency, resource allocation, and workflow optimization across regional divisions.
+                </p>
+                <p class="text-sm">
+                    <strong>1. Executive Summary:</strong> Performance metrics indicate a steady 14% growth in productivity across all standardized frameworks. Key key performance indicators (KPIs) remain well aligned with forecasted strategic outcomes.
+                </p>
+                <p class="text-sm">
+                    <strong>2. Performance Analysis:</strong> Further evaluation is required for Q4 resource allocation. Standard procedures will remain active throughout the current operational window.
+                </p>
+                <div class="h-32 bg-slate-50 border border-dashed border-slate-300 rounded p-4 flex items-center justify-center text-slate-400 text-xs">
+                    [ Table Data Placeholder: Operational Metrics ]
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // User Database Definition
+        const USER_DB = {
+            'adminP': { name: 'Admin', pass: '022614', role: 'Admin', blocked: false },
+            'guest': { name: 'Guest', pass: '2014', role: 'Guest', blocked: false }
+        };
+
+        // App State
+        let currentUser = null;
+        let sessionStartTime = null;
+        let timerInterval = null;
+        let activeTab = 'games';
+        let currentGameType = 'space';
+        let isGameRunning = false;
+        let gameLoopReq = null;
+
+        // Audit Logs State
+        let auditLogs = [
+            { time: '10:14:02', msg: 'System initialized in Campeones mode.' },
+            { time: '10:15:30', msg: 'Guest session created successfully.' }
+        ];
+
+        // System Initialization
+        window.onload = function() {
+            checkExistingSession();
+            setupPanicKeys();
+            initResizeListener();
+        };
+
+        function addLog(message) {
+            const now = new Date();
+            const timeStr = now.toTimeString().split(' ')[0];
+            auditLogs.unshift({ time: timeStr, msg: message });
+            renderAuditLogs();
+        }
+
+        function renderAuditLogs() {
+            const logContainer = document.getElementById('admin-audit-log');
+            if (!logContainer) return;
+            logContainer.innerHTML = auditLogs.map(log => 
+                `<div><span class="text-slate-500">[${log.time}]</span> <span class="text-spain-gold">${log.msg}</span></div>`
+            ).join('');
+        }
+
+        // --- AUTHENTICATION ENGINE ---
+        function handleLogin(e) {
+            e.preventDefault();
+            const userIn = document.getElementById('login-username').value.trim();
+            const passIn = document.getElementById('login-password').value;
+            const errBox = document.getElementById('login-error');
+            const errText = document.getElementById('login-error-text');
+
+            const account = USER_DB[userIn];
+
+            if (!account || account.pass !== passIn) {
+                errText.textContent = 'Invalid username or password.';
+                errBox.classList.remove('hidden');
+                return;
+            }
+
+            if (account.blocked) {
+                errText.textContent = 'Access to this account has been blocked by Admin.';
+                errBox.classList.remove('hidden');
+                return;
+            }
+
+            // Successful Login
+            currentUser = { username: userIn, ...account };
+            sessionStorage.setItem('portal_session', JSON.stringify(currentUser));
+            errBox.classList.add('hidden');
+            
+            addLog(`User ${currentUser.name} (${userIn}) authenticated.`);
+            launchPortal();
+        }
+
+        function checkExistingSession() {
+            const saved = sessionStorage.getItem('portal_session');
+            if (saved) {
+                try {
+                    currentUser = JSON.parse(saved);
+                    launchPortal();
+                } catch(e) {
+                    sessionStorage.removeItem('portal_session');
+                }
+            }
+        }
+
+        function launchPortal() {
+            document.getElementById('auth-overlay').classList.add('hidden');
+            document.getElementById('main-app').classList.remove('hidden');
+            document.getElementById('main-app').classList.add('flex');
+
+            document.getElementById('current-user-name').textContent = currentUser.name;
+            
+            // Show Admin Tab if Admin
+            if (currentUser.role === 'Admin') {
+                document.getElementById('nav-btn-admin').classList.remove('hidden');
+                document.getElementById('mobile-btn-admin').classList.remove('hidden');
+            } else {
+                document.getElementById('nav-btn-admin').classList.add('hidden');
+                document.getElementById('mobile-btn-admin').classList.add('hidden');
+            }
+
+            // Start Session Timer
+            sessionStartTime = Date.now();
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(updateSessionTimer, 1000);
+
+            // Setup Admin View
+            renderAdminTable();
+            renderAuditLogs();
+
+            // Default Game setup
+            selectGame('space');
+        }
+
+        function handleLogout() {
+            if (currentUser) {
+                addLog(`User ${currentUser.name} logged out.`);
+            }
+            currentUser = null;
+            sessionStorage.removeItem('portal_session');
+            if (timerInterval) clearInterval(timerInterval);
+            
+            document.getElementById('main-app').classList.add('hidden');
+            document.getElementById('main-app').classList.remove('flex');
+            document.getElementById('auth-overlay').classList.remove('hidden');
+            stopGame();
+        }
+
+        function updateSessionTimer() {
+            if (!sessionStartTime) return;
+            const diff = Math.floor((Date.now() - sessionStartTime) / 1000);
+            const hrs = String(Math.floor(diff / 3600)).padStart(2, '0');
+            const mins = String(Math.floor((diff % 3600) / 60)).padStart(2, '0');
+            const secs = String(diff % 60).padStart(2, '0');
+            document.getElementById('session-timer').textContent = `${hrs}:${mins}:${secs}`;
+        }
+
+        // --- NAVIGATION TABS ---
+        function switchTab(tabId) {
+            activeTab = tabId;
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+
+            // Update Tab Button Styles
+            document.querySelectorAll('.nav-tab').forEach(btn => {
+                btn.classList.remove('text-spain-gold', 'bg-slate-800/80');
+                btn.classList.add('text-slate-400');
+            });
+
+            const activeBtn = document.getElementById(`nav-btn-${tabId}`);
+            if (activeBtn) {
+                activeBtn.classList.add('text-spain-gold', 'bg-slate-800/80');
+                activeBtn.classList.remove('text-slate-400');
+            }
+
+            if (tabId === 'admin') {
+                renderAdminTable();
+            }
+
+            addLog(`Switched to ${tabId.toUpperCase()} tab.`);
+        }
+
+        function renderAdminTable() {
+            const tableBody = document.getElementById('admin-user-table');
+            if (!tableBody) return;
+
+            let blockedCount = 0;
+            const userKeys = Object.keys(USER_DB);
+
+            tableBody.innerHTML = userKeys.map(key => {
+                const u = USER_DB[key];
+                if (u.blocked) blockedCount++;
+                const isCurrent = currentUser && currentUser.username === key;
+                const statusBadge = u.blocked 
+                    ? `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-red-950 text-red-400 border border-red-800">BLOCKED</span>`
+                    : `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-950 text-emerald-400 border border-emerald-800">ACTIVE</span>`;
+
+                return `
+                    <tr class="hover:bg-slate-800/40 transition">
+                        <td class="py-3 font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-user-circle text-slate-400 text-sm"></i>
+                            ${u.name} (${key})
+                        </td>
+                        <td class="py-3 text-slate-300 font-semibold">${u.role}</td>
+                        <td class="py-3">${statusBadge}</td>
+                        <td class="py-3 text-slate-400">Just Now</td>
+                        <td class="py-3 text-slate-400">${isCurrent ? activeTab.toUpperCase() + ' Tab' : 'Idle'}</td>
+                        <td class="py-3 text-right">
+                            ${key === 'adminP' 
+                                ? `<span class="text-[10px] text-slate-500 italic">Protected</span>`
+                                : `<button onclick="toggleBlockUser('${key}')" class="px-2.5 py-1 rounded text-[10px] font-bold transition ${u.blocked ? 'bg-emerald-600 hover:bg-emerald-500 text-white' : 'bg-red-600 hover:bg-red-500 text-white'}">
+                                    ${u.blocked ? 'Unblock' : 'Block Access'}
+                                   </button>`
+                            }
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            document.getElementById('admin-stat-blocked').textContent = blockedCount;
+        }
+
+        function toggleBlockUser(username) {
+            if (USER_DB[username]) {
+                USER_DB[username].blocked = !USER_DB[username].blocked;
+                addLog(`Admin ${USER_DB[username].blocked ? 'blocked' : 'unblocked'} user ${username}.`);
+                renderAdminTable();
+            }
+        }
+
+        function refreshAdminTable() {
+            renderAdminTable();
+            renderAuditLogs();
+        }
+
+        // --- PANIC KEY (SHIFT+Q / CTRL+Q) ---
+        function setupPanicKeys() {
+            window.addEventListener('keydown', (e) => {
+                if (e.shiftKey && e.key.toLowerCase() === 'q') {
+                    e.preventDefault();
+                    document.getElementById('quick-word-screen').classList.remove('hidden');
+                    stopGame();
+                }
+                if (e.ctrlKey && e.key.toLowerCase() === 'q') {
+                    e.preventDefault();
+                    document.getElementById('quick-word-screen').classList.add('hidden');
+                }
+            });
+        }
+
+        const canvas = document.getElementById('game-canvas');
+        const ctx = canvas.getContext('2d');
+
+        function initResizeListener() {
+            function resizeCanvas() {
+                const rect = canvas.parentElement.getBoundingClientRect();
+                canvas.width = rect.width;
+                canvas.height = rect.height;
+            }
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+        }
+
+        function selectGame(type) {
+            stopGame();
+            currentGameType = type;
+
+            document.querySelectorAll('.game-sel-btn').forEach(btn => {
+                btn.classList.remove('text-spain-gold', 'bg-slate-800', 'border', 'border-spain-gold/30');
+                btn.classList.add('text-slate-400');
+            });
+
+            const activeBtn = document.getElementById(`btn-game-${type}`);
+            if (activeBtn) {
+                activeBtn.classList.add('text-spain-gold', 'bg-slate-800', 'border', 'border-spain-gold/30');
+                activeBtn.classList.remove('text-slate-400');
+            }
+
+            const titleMap = {
+                'space': 'Space Defender 2026',
+                'snake': 'Snake Champions 2026',
+                'pong': 'Pong Arcade Champions'
+            };
+            document.getElementById('game-title-display').textContent = titleMap[type];
+            showModal('Ready to Play?', `Launch ${titleMap[type]}. Use keyboard controls to score high!`);
+        }
+
+        function showModal(title, desc) {
+            document.getElementById('game-modal-title').textContent = title;
+            document.getElementById('game-modal-desc').textContent = desc;
+            document.getElementById('game-modal').classList.remove('hidden');
+        }
+
+        function hideModal() {
+            document.getElementById('game-modal').classList.add('hidden');
+        }
+
+        function stopGame() {
+            isGameRunning = false;
+            if (gameLoopReq) cancelAnimationFrame(gameLoopReq);
+        }
+
+        function startCurrentGame() {
+            hideModal();
+            stopGame();
+            isGameRunning = true;
+            document.getElementById('game-score').textContent = '0';
+
+            if (currentGameType === 'space') runSpaceGame();
+            else if (currentGameType === 'snake') runSnakeGame();
+            else if (currentGameType === 'pong') runPongGame();
+        }
+
+        // ================= GAME 1: SPACE SHOOTER =================
+        function runSpaceGame() {
+            let score = 0;
+            let player = { x: canvas.width / 2, y: canvas.height - 30, w: 30, h: 20, speed: 5 };
+            let bullets = [];
+            let enemies = [];
+            let keys = {};
+
+            const keyHandler = (e) => { keys[e.code] = e.type === 'keydown'; };
+            window.onkeydown = keyHandler;
+            window.onkeyup = keyHandler;
+
+            let spawnTimer = 0;
+
+            function gameLoop() {
+                if (!isGameRunning) return;
+
+                // Clear Canvas
+                ctx.fillStyle = '#020617';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Player Movement
+                if ((keys['ArrowLeft'] || keys['KeyA']) && player.x > 0) player.x -= player.speed;
+                if ((keys['ArrowRight'] || keys['KeyD']) && player.x < canvas.width - player.w) player.x += player.speed;
+
+                // Player Shooting
+                if (keys['Space']) {
+                    if (bullets.length === 0 || bullets[bullets.length - 1].y < player.y - 15) {
+                        bullets.push({ x: player.x + player.w / 2 - 2, y: player.y, w: 4, h: 10, speed: 7 });
+                    }
+                }
+
+                // Draw Player (Spain Ship)
+                ctx.fillStyle = '#FFD700';
+                ctx.beginPath();
+                ctx.moveTo(player.x + player.w / 2, player.y);
+                ctx.lineTo(player.x, player.y + player.h);
+                ctx.lineTo(player.x + player.w, player.y + player.h);
+                ctx.fill();
+
+                // Update Bullets
+                ctx.fillStyle = '#DC143C';
+                bullets.forEach((b, index) => {
+                    b.y -= b.speed;
+                    ctx.fillRect(b.x, b.y, b.w, b.h);
+                    if (b.y < 0) bullets.splice(index, 1);
+                });
+
+                // Spawn Enemies
+                spawnTimer++;
+                if (spawnTimer % 40 === 0) {
+                    enemies.push({ x: Math.random() * (canvas.width - 20), y: -20, w: 20, h: 20, speed: 2 + Math.random() });
+                }
+
+                // Update Enemies
+                ctx.fillStyle = '#38BDF8';
+                enemies.forEach((e, eIndex) => {
+                    e.y += e.speed;
+                    ctx.fillRect(e.x, e.y, e.w, e.h);
+
+                    // Check Collision with Bullets
+                    bullets.forEach((b, bIndex) => {
+                        if (b.x < e.x + e.w && b.x + b.w > e.x && b.y < e.y + e.h && b.y + b.h > e.y) {
+                            enemies.splice(eIndex, 1);
+                            bullets.splice(bIndex, 1);
+                            score += 10;
+                            document.getElementById('game-score').textContent = score;
+                        }
+                    });
+
+                    // Game Over condition
+                    if (e.y + e.h >= player.y) {
+                        stopGame();
+                        showModal('Game Over!', `Final Score: ${score}. Retry Space Defender!`);
+                    }
+                });
+
+                gameLoopReq = requestAnimationFrame(gameLoop);
+            }
+
+            gameLoop();
+        }
+
+        // ================= GAME 2: SNAKE CHAMPIONS =================
+        function runSnakeGame() {
+            let score = 0;
+            const gridSize = 15;
+            let snake = [{ x: 5, y: 5 }];
+            let dir = { x: 1, y: 0 };
+            let food = { x: 10, y: 10 };
+
+            window.onkeydown = (e) => {
+                if ((e.key === 'ArrowUp' || e.key === 'w') && dir.y === 0) dir = { x: 0, y: -1 };
+                if ((e.key === 'ArrowDown' || e.key === 's') && dir.y === 0) dir = { x: 0, y: 1 };
+                if ((e.key === 'ArrowLeft' || e.key === 'a') && dir.x === 0) dir = { x: -1, y: 0 };
+                if ((e.key === 'ArrowRight' || e.key === 'd') && dir.x === 0) dir = { x: 1, y: 0 };
+            };
+
+            function updateSnake() {
+                if (!isGameRunning) return;
+
+                const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
+                const cols = Math.floor(canvas.width / gridSize);
+                const rows = Math.floor(canvas.height / gridSize);
+
+                // Wall collision
+                if (head.x < 0 || head.x >= cols || head.y < 0 || head.y >= rows) {
+                    stopGame();
+                    showModal('Game Over!', `Final Score: ${score}. Try again!`);
+                    return;
+                }
+
+                // Self collision
+                if (snake.some(s => s.x === head.x && s.y === head.y)) {
+                    stopGame();
+                    showModal('Game Over!', `Final Score: ${score}. Try again!`);
+                    return;
+                }
+
+                snake.unshift(head);
+
+                // Food collision
+                if (head.x === food.x && head.y === food.y) {
+                    score += 10;
+                    document.getElementById('game-score').textContent = score;
+                    food = {
+                        x: Math.floor(Math.random() * cols),
+                        y: Math.floor(Math.random() * rows)
+                    };
+                } else {
+                    snake.pop();
+                }
+
+                // Render
+                ctx.fillStyle = '#020617';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Draw Food
+                ctx.fillStyle = '#DC143C';
+                ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 1, gridSize - 1);
+
+                // Draw Snake
+                ctx.fillStyle = '#FFD700';
+                snake.forEach(s => ctx.fillRect(s.x * gridSize, s.y * gridSize, gridSize - 1, gridSize - 1));
+
+                setTimeout(updateSnake, 100);
+            }
+
+            updateSnake();
+        }
+
+        // ================= GAME 3: PONG ARCADE =================
+        function runPongGame() {
+            let score = 0;
+            let paddleW = 80, paddleH = 10;
+            let paddleX = (canvas.width - paddleW) / 2;
+            let ballX = canvas.width / 2, ballY = canvas.height / 2;
+            let ballDX = 3, ballDY = -3;
+
+            window.onmousemove = (e) => {
+                const rect = canvas.getBoundingClientRect();
+                paddleX = e.clientX - rect.left - paddleW / 2;
+            };
+
+            function loop() {
+                if (!isGameRunning) return;
+
+                ctx.fillStyle = '#020617';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Draw Paddle
+                ctx.fillStyle = '#FFD700';
+                ctx.fillRect(paddleX, canvas.height - paddleH - 5, paddleW, paddleH);
+
+                // Draw Ball
+                ctx.fillStyle = '#DC143C';
+                ctx.beginPath();
+                ctx.arc(ballX, ballY, 6, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Ball Movement & Collision
+                ballX += ballDX;
+                ballY += ballDY;
+
+                if (ballX <= 0 || ballX >= canvas.width) ballDX = -ballDX;
+                if (ballY <= 0) ballDY = -ballDY;
+
+                if (ballY >= canvas.height - paddleH - 10) {
+                    if (ballX >= paddleX && ballX <= paddleX + paddleW) {
+                        ballDY = -ballDY;
+                        score += 5;
+                        document.getElementById('game-score').textContent = score;
+                    } else if (ballY >= canvas.height) {
+                        stopGame();
+                        showModal('Game Over!', `Final Score: ${score}. Try again!`);
+                        return;
+                    }
+                }
+
+                gameLoopReq = requestAnimationFrame(loop);
+            }
+
+            loop();
+        }
+    </script>
+</body>
+</html>
